@@ -1,0 +1,49 @@
+<!-- Defini canvas para desenhar -->
+<canvas width="600" height="400"></canvas>
+
+<script>
+
+    // Definição da tela e do pincel 2d
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+
+    // Pinta a tela de cinza
+    pincel.fillStyle = 'grey';
+    pincel.fillRect(0, 0, 600, 400);
+
+    // Definição dos valores dos raios mínimo, máximo e atual para as condições aplicadas na function desenhaCirculo
+    var raioMinimo = 10;
+    var raioMaximo = 40;
+    var raioAtual = 10;
+
+    // Função que irá desenhar o círculo na tela
+    function desenhaCirculo(evento) {
+        
+        // Definição de variáveis para identifiar o tamanho da tela
+        // offsetleft e offsetTop desconsideram o recuo do topo e da esquerda com relação ao canvas
+        var x = evento.pageX - tela.offsetLeft;
+        var y = evento.pageY - tela.offsetTop;
+        
+        // Verifica se a tecla SHIFT está pressionada e se o raioAtual é menor que o raioMaximo
+        // Se verdadeiro, irá incrementar o raioAtual com + 10
+        if(evento.shiftKey && raioAtual < raioMaximo){
+            raioAtual += 10;
+        }
+
+        // Verifica se a tecla ALT está pressionada e se o raioAtual é menor que o raioMinimo
+        // Se verdadeiro, irá decrementar o raioAtual com - 5
+        if(evento.altKey && raioAtual > raioMinimo) {
+            raioAtual -= 5;
+        }
+        
+        // Defini como será pintado o círculo
+        pincel.fillStyle = 'blue';
+        pincel.beginPath();
+        pincel.arc(x, y, raioAtual, 0, 2 * 3.14);
+        pincel.fill();
+    }
+
+    // Nesse caso nao pode colocar () pois ele executa a função assim que a página for carregada, mas a função apenas deverá ser acionada quando o mouse for clicado
+    tela.onclick = desenhaCirculo;
+
+</script>

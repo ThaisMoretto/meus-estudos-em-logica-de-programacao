@@ -1,0 +1,78 @@
+<!-- Defini canvas para desenhar -->
+<canvas width="600" height="400"></canvas>
+
+<script>
+
+    // Definição da tela e do pincel 2d
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+
+    // Definição do raio padrão do alvo central
+    var raio = 10;
+
+    // Definição de variáveis para armazenar os valores de x e y que serão grados aleatoriamente
+    var xAleatorio;
+    var yAleatorio;
+
+    // Função que desenha os círculos que compõem o alvo (recebe os parâmetros x, y, raio, cor da função desenhaAlvo)
+    function desenhaCirculo(x, y, raio, cor) {
+
+        pincel.fillStyle = cor;
+        pincel.beginPath();
+        pincel.arc(x, y, raio, 0, 2 * Math.PI);
+        pincel.fill();
+   }
+
+    // Função que limpa a tela, ou seja, o alvo desenhado anteriormente para receber a nova posição aleatória
+    function limpaTela() {
+       
+        pincel.clearRect(0, 0, 600, 400);
+    }
+
+    // Função que recebe da função atualizaTela o valor de xAleatorio e yAleatorio e envia para a função desenhaCirculo os parâmetros necessários (valores de x, y, raio, cor)
+    function desenhaAlvo(x, y) {
+
+        desenhaCirculo(x, y, raio+20, 'red');
+        desenhaCirculo(x, y, raio+10, 'white');
+        desenhaCirculo(x, y, raio, 'red');
+    }
+
+    // Função que irá sortear a próxima posição aleatória do alvo. Recebe como parâmetro o valor da chamada da função atualizaTela
+    function sorteiaPosicao(maximo) {
+
+        return Math.floor(Math.random() * maximo); //Math.floor arredonda para baixo
+    }
+
+    // Limpa a tela, envia para a função sorteiaPosicao o valor máximo de x e y e após, envia para a função desenhaAlvo os valores sorteados aleatóriamente para x e y
+    function atualizaTela() {
+       
+        limpaTela();
+        xAleatorio = sorteiaPosicao(600);
+        yAleatorio = sorteiaPosicao(400);
+        desenhaAlvo(xAleatorio, yAleatorio);
+    }
+
+    // Chama a função atualizaTela definindo um tempo de espera
+    setInterval(atualizaTela, 1000);
+
+    // Função que irá verificar se o usuário clicou no alvo central. Irá receber o evento
+    function dispara(evento) {
+
+        // Definição de variáveis para identifiar o tamanho da tela
+        //offsetleft e offsetTop desconsideram o recuo do topo e da esquerda com relação ao canvas
+        var x = evento.pageX - tela.offsetLeft;
+        var y = evento.pageY - tela.offsetTop;
+
+        // Verifica se o clique foi na área do alvo central
+        if((x > xAleatorio - raio)
+            && (x < xAleatorio + raio)
+            && (y > yAleatorio - raio)
+            && (y < yAleatorio + raio) ) {
+            alert('Acertou!');
+        }
+    }
+
+    // Chama a função dispara quando o usuário clicar com o mouse no alvo (a chamada não deve ter o abre e fecha parênteses, senão ela será chamada assim que a página for carregada)
+    tela.onclick = dispara;
+
+</script>

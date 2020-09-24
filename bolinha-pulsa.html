@@ -1,0 +1,53 @@
+<!-- Defini canvas para desenhar -->
+<canvas width="600" height="400"></canvas>
+
+<script>
+
+    // Definição da tela e do pincel 2d
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+
+    // Pinta a tela de cinza
+    pincel.fillStyle = 'lightgray';
+    pincel.fillRect(0, 0, 600, 400);
+
+    // Função que desennha o circulo recebendo como parâmetro as coordenadas de X e Y e o raio
+    function desenhaCirculo(x, y, raio) {
+        
+        pincel.fillStyle = 'blue';
+        pincel.beginPath();
+        pincel.arc(x, y, raio, 0, 2 * Math.PI);
+        pincel.fill();
+    }
+
+    // Função que limpa a tela, ou seja, a bolinha pintada primeiro. É chamada de dentro da função atualizaTela
+    function limpaTela() {
+        
+        pincel.clearRect(0, 0, 600, 400);
+    }
+
+    // Definição do valor do raio e do fator de crescimento da bolinha para o efeito de pulsação
+    var raio = 19;
+    var fatorCrescimento = 1;
+
+    // Função que atualiza a tela para o novo tamanho de bolinha
+    function atualizaTela() {
+
+        limpaTela();
+
+        // Verifica se o raio da bolinha é maior que 30. Se verdadeiro, o fatorCrescimento recebe -1. Se falso, verifica se o raio é menor que 20. Se verdadeiro, o fatorCrescimento recebe 1
+        if(raio > 30) {
+            fatorCrescimento = -1;
+        } else if(raio < 20) {
+            fatorCrescimento = 1;
+        }
+
+        // Chamada da função desenhaCirculo passando os parâmetros X, Y, raio, cor. Após, o raio irá ser incrementado/decrementado com o fatorCrescimento
+        desenhaCirculo(300, 200, raio, 'blue');
+        raio = raio + fatorCrescimento;
+    }
+
+    // SetInterval chama a função que está entre o parênteses informando qual é o tempo (em milissegundos) para execução da função
+    setInterval(atualizaTela, 20);
+    
+</script>

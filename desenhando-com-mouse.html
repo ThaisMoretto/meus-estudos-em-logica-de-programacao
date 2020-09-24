@@ -1,0 +1,72 @@
+<!-- Defini canvas para desenhar -->
+<canvas width="600" height="400"></canvas>
+
+<script>
+
+    // Definição da tela e do pincel 2d
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+
+    // Pinta a tela de cinza
+    pincel.fillStyle = 'grey';
+    pincel.fillRect(0, 0, 600, 400);
+
+    // Define variável desenha com valor false
+    desenha = false;
+
+    // Função que irá desenhar caso o botão esquerdo do mouse esteja clicado
+    function desenhaCirculo(evento) {
+
+        // Verifica se a variável desenha é true. Se sim, vai desenhar apenas no espaço pre-definido
+        if(desenha) {
+
+            // Definição de variáveis para identifiar o tamanho da tela
+            // offsetleft e offsetTop desconsideram o recuo do topo e da esquerda com relação ao canvas
+            var x = evento.pageX - tela.offsetLeft;
+            var y = evento.pageY - tela.offsetTop;
+
+            // Desenha a bolinha quando o valor de desenha é true
+            pincel.fillStyle = 'blue';
+            pincel.beginPath();
+            pincel.arc(x, y, 10, 0, 2 * 3.14);
+            pincel.fill();
+        }
+    }
+
+    // Função que altera o valor da variável desenha para verdadeiro
+    function habilitaDesenhar(evento){
+        desenha = true;
+    }
+    
+    // Função que altera o valor da variável desenha para falso
+    function desabilitaDesenhar(evento){
+        desenha = false;
+    }
+
+    // Evento que dispara assim que o mouse é pressionado e chama a function habilitaDesenhar
+    tela.onmousedown = habilitaDesenhar;
+    
+    // Evento que dispara assim que o mouse é solto e chama a function desabilitaDesenhar
+    tela.onmouseup = desabilitaDesenhar;
+
+    // Evento que dispara assim que o mouse clicado é movimentado. Chama a function desenhaCirculo
+    tela.onmousemove = desenhaCirculo;  
+
+
+    /*
+    No caso das funções habilitaDesenhar e desabilitaDesenhar, poderia ter sido utilizado a função anônima. FUNÇÃO ANÔNIMA (não tem nome) podem ser atribuídas diretamente à variável
+
+    atribuindo diretamente a função anônima:
+
+    tela.onmousedown = function() {
+
+        desenha = true;
+    }
+
+    tela.onmouseup = function() {
+
+        desenha = false;
+    }
+    */
+
+</script>

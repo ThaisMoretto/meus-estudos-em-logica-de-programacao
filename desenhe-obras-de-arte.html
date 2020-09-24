@@ -1,0 +1,133 @@
+<meta charset="UTF-8">
+
+<!-- Defini canvas para desenhar -->
+<canvas width="600" height="400"></canvas>
+
+<script>
+
+    // Função que desenha os quadrados das cores da paleta. Será acionada pela function desenhaPaletaDeCores
+    function desenhaQuadrado(x, y, tamanho, cor) {
+
+        pincel.fillStyle = cor;
+        pincel.fillRect(x, y, tamanho, tamanho)
+        pincel.fill();
+    }
+
+    // Função que irá desenhar na tela quando acionada pela function lidaComMovimentoDoMouse
+    function desenhaCirculo(x, y, raio, cor) {
+
+        pincel.fillStyle = cor; // o padrão é blue
+        pincel.beginPath();
+        pincel.arc(x, y, raio, 0, 2 * 3.14);
+        pincel.fill();
+
+    }
+
+    // Função que irá desenhar a paleta de cores na tela
+    function desenhaPaletaDeCores() {
+
+        desenhaQuadrado(xVermelho, yQuadrados, tamanhoQuadrados, 'red');
+        desenhaQuadrado(xVerde, yQuadrados, tamanhoQuadrados, 'green');
+        desenhaQuadrado(xAzul, yQuadrados, tamanhoQuadrados, 'blue');
+
+    }
+
+    // Função responsável por verifiar se é permitido desenhar na tela
+    function lidaComMovimentoDoMouse(evento) {
+
+        // Definição de variáveis para identifiar o tamanho da tela
+        // offsetleft e offsetTop desconsideram o recuo do topo e da esquerda com relação ao canvas
+        var x = evento.pageX - tela.offsetLeft;
+        var y = evento.pageY - tela.offsetTop;
+
+        // Se o valor de desenha for true e a função podeDesenharNaArea também, irá chamar a função desenhaCirculo passando os parâmetros necessários
+        if(desenha && podeDesenharNaArea(x,y)) {
+
+            desenhaCirculo(x, y, 5, corAtual);
+        }
+    }
+
+    // Função que altera o valor da variável desenha para verdadeiro
+    function habilitaDesenhar() {
+        desenha = true;
+    }
+
+    // Função que altera o valor da variável desenha para falso
+    function desabilitaDesenhar() {
+        desenha = false;
+    }
+
+    // Função que irá verificar se é permitido desenhar na área clicada. Se sim, retornará true. Senão, retornará false
+    function podeDesenharNaArea(x, y) {
+
+         if(x >= 0 && x < 3*tamanhoQuadrados && y >= 0 && y < tamanhoQuadrados) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // Função responsável por identificar a cor clicada
+    function selecionaCor(evento) {
+
+        // Definição de variáveis para identifiar o tamanho da tela
+        // offsetleft e offsetTop desconsideram o recuo do topo e da esquerda com relação ao canvas
+        var x = evento.pageX - tela.offsetLeft;
+        var y = evento.pageY - tela.offsetTop;
+
+        // Cada condição muda a variável "corAtual"
+
+        // Começamos pela condição do y que é igual em todos os casos
+        if (y > yQuadrados && y < yQuadrados + tamanhoQuadrados) {
+
+            if (x > xVermelho && x < xVermelho + tamanhoQuadrados) {
+                corAtual = 'red';
+
+            } else if (x > xVerde && x < xVerde + tamanhoQuadrados) {
+                corAtual = 'green';
+
+            } else if (x > xAzul && x < xAzul + tamanhoQuadrados) {
+                corAtual = 'blue';
+            }
+        }
+    }
+
+    // Definição da tela e do pincel 2d
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+
+    // Pinta a tela de cinza claro
+    pincel.fillStyle = 'lightgrey';
+    pincel.fillRect(0, 0, 600, 400);
+
+    // Define variável desenha com valor false
+    var desenha = false;
+
+    // Define a cor inicial do pincel
+    var corAtual = 'blue';
+    
+    // Define a posição de cada uma das cores no eixo X
+    var xVermelho = 0;
+    var xVerde  = 50;
+    var xAzul = 100;
+
+    // Define a posição das cores no eixo Y e qual o tamanho de cada quadrado que comporta a cor
+    var yQuadrados = 0;
+    var tamanhoQuadrados = 50;
+
+    // Chamada para a função que irá desenhar a paleta de cores na tela
+    desenhaPaletaDeCores();
+
+    // Evento que dispara assim que o mouse clicado é movimentado. Chama a function lidaComMovimentoDoMouse
+    tela.onmousemove = lidaComMovimentoDoMouse;
+
+    // Evento que dispara assim que o mouse é pressionado e chama a function habilitaDesenhar
+    tela.onmousedown = habilitaDesenhar;
+
+    // Evento que dispara assim que o mouse é solto e chama a function desabilitaDesenhar
+    tela.onmouseup = desabilitaDesenhar;
+
+    // Evento que irá chamar a function selecionaCor, responsável por identificar a cor clicada
+    tela.onclick = selecionaCor;
+
+</script>
