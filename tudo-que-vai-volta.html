@@ -1,0 +1,59 @@
+<!-- Defini canvas para desenhar -->
+<canvas width="600" height="400"></canvas>
+
+<script>
+
+    // Definição da tela e do pincel 2d
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+
+    // Função que irá desenhar a bolinha na tela. Recebe os parâmetros X, Y e RAIO
+    function desenhaCirculo(x, y, raio){
+        
+        pincel.fillStyle = 'blue';
+        pincel.beginPath();
+        pincel.arc(x, y, raio, 0, 2 * Math.PI);
+        pincel.fill();
+    }
+
+    // Função que irá limpar a tela a cada nova bolinha pintada
+    function limpaTela() {
+        
+        // Limpa a tela toda inclusive o fundo cinza
+        pincel.clearRect(0, 0, 600, 400);
+
+        // Define fundo do canvas de cinza nas medidas de 600x400
+        pincel.fillStyle = 'lightgrey';
+        pincel.fillRect(0, 0, 600, 400);
+    }
+
+    // Definição da variável x valendo 20
+    var x = 20;
+
+    // Definição do sentido em que a bolinha será desenhada para dar o efeito de movimento
+    var sentido = 1;
+
+    // Função que irá limpar a tela, desenhar a bolinha e incrementar o X com 1
+    function atualizaTela() {
+
+        // Chamada para a function limpaTela()
+        limpaTela();
+
+        // Se o valor de x for maior que 600, o sentido será decrementado em -1, assim a bolinha começará a voltar e quando x for menor que 0, o sentido será incrementado com + 1 e a bolinha irá mudar de sentido novamente
+        if(x > 600) {
+            sentido = -1;
+        } else if(x < 0) {
+            sentido = 1;
+        }
+
+        // Chamada para a function desenhaCirculo que desenhará o círculo de acordo com os parâmetros recebidos X, 20, 10
+        desenhaCirculo(x, 20, 10);
+
+        // Variável x recebe seu valor + o valor da variável sentido
+        x = x + sentido;
+    }
+
+    // Chamada para a funciton atualizaTela e a quantidade de tempo em millisegundos
+    setInterval(atualizaTela, 10);
+    
+</script>

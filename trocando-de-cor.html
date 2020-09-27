@@ -1,0 +1,58 @@
+<!-- Defini canvas para desenhar -->
+<canvas width="600" height="400"></canvas>
+
+<script>
+
+    // Definição da tela e do pincel 2d
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+
+    // Define fundo do canvas de cinza nas medidas de 600x400
+    pincel.fillStyle = 'grey';
+    pincel.fillRect(0, 0, 600, 400);
+
+    // Define as cores possíveis para serem alternadas em um array
+    var cores = ['blue', 'red', 'green']
+
+    // Define que a cor inicial será azul (índice 0 do array)
+    var indiceCorAtual = 0;
+
+    // Função que irá desenhar o círculo quando o mouse for clicado com o botão esquerdo
+    function desenhaCirculo(evento) {
+
+        // Definição de variáveis para identifiar o tamanho da tela
+        // offsetleft e offsetTop desconsideram o recuo do topo e da esquerda com relação ao canvas
+        var x = evento.pageX - tela.offsetLeft;
+        var y = evento.pageY - tela.offsetTop;
+
+        // Define que a cor do pincel será a cor equivalente ao índice 
+        pincel.fillStyle = cores[indiceCorAtual];
+        pincel.beginPath();
+        pincel.arc(x, y, 10, 0, 2 * 3.14);
+        pincel.fill();
+        console.log(x + ',' + y);
+
+    }
+
+    // Chamada para a function desenhaCirculo que recebe o evento de click
+    tela.onclick = desenhaCirculo;
+
+    // Função que irá mudar o índice da cor para pintura da tela
+    function mudaCor() {
+
+        // Variável índice recebe o valor dela + 1 e a cor passa a ser outra
+        indiceCorAtual++;
+
+        // Se o índice atual for maior ou igual ao tamanho do arrayl cores, a variável indiceCorAtual receberá o índice 0 novamente, ou seja, volta para a primeira cor, azul
+        if(indiceCorAtual >= cores.length) {
+            indiceCorAtual = 0; // volta para a primeira cor, azul
+        }
+
+        // Retorna falso para não exibir o menu padrão do canvas quando clicar com o botão direito do mouse
+        return false;
+    }
+
+    // Clique com o botão direito do mouse que irá chamar a function mudaCor
+    tela.oncontextmenu = mudaCor;
+
+</script>
